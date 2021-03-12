@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 
+    [
+        'uses'=> 'LoginController@index'
+]);
+Route::post('/log', 
+    [
+        'uses'=> 'LoginController@login'
+]);
+Route::get('/register', 
+    [
+        'uses'=> 'LoginController@register'
+]);
+Route::post('/success', 
+    [
+        'uses'=> 'LoginController@registered'
+]);
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
