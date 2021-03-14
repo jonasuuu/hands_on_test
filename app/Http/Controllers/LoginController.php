@@ -5,37 +5,42 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Redirector;
 
 class LoginController extends Controller
 {
     public function index(){
+        if(Auth::user()!=null){
+            Auth::logout();
+        }
         $x="";
         return view('login.index', compact('x'));
     }
     public function login(Request $request){
-        $x="";
-        if(isset($request->Login)){
-            $username = $request->user;
-            $password = $request->pass;
-            $check = DB::table('users')
-                    ->where('username', $username)
-                    ->get();
-            if (count($check) >0) {
-                if(Hash::check($password, $check[0]->password)){
-                    return view('login.welcome',compact('username'));
-                }
-                else{
-                    $x= "username/password incorrect";
-                    // return "<script type='text/javascript'>alert('username/password incorrect');</script>";
-                    return view('login.index', compact('x'));
-                }
-            }
+        $credentials = $request->only('username', 'password');
+        if (Auth::attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->action('LoginController@welcome');
         }
         else{
-            $x= "enter username/password";
-            return view('login.index', compact('x'));
+            $x="wrong username/password";
+            return view('login.index', compact('x'));      
         }
+    }
+    public function wrongcreds(){
+        
+    }
+    public function welcome(){
+        $username="";
+        if (Auth::user()!=null) {
+            $username=Auth::user()->username;
+            return view('login.welcome', compact('username'));
+        }
+        else{
+            return redirect()->action('LoginController@index');
+        }
+        
     }
     public function register(){
         return view('login.register');

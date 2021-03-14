@@ -70,11 +70,11 @@
             <h1>Login</h1>
             <p>Hands on Test</p>
             <label>Username</label>
-            <input type="text" name="user" required="">
+            <input type="text" name="username" required="">
             <br>
             <br>
             <label>Password</label>
-            <input type="password"  name="pass" required="">
+            <input type="password"  name="password" required="">
             <br>
             <label style="color:red">{{$x}}</label>
             <br>

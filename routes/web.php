@@ -19,6 +19,10 @@ Route::post('/log',
     [
         'uses'=> 'LoginController@login'
 ]);
+Route::get('/welcome', 
+    [
+        'uses'=> 'LoginController@welcome'
+]);
 Route::get('/register', 
     [
         'uses'=> 'LoginController@register'
